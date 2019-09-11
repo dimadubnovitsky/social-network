@@ -1,0 +1,15 @@
+.item {
+    display: inline-block;
+    margin: 5px;
+    text-align: center;
+}
+
+.item img {
+    width: 40px;
+    height: 40px;
+    border-radius: 30px;
+}
+
+.name {
+    font-size: 14px;
+}

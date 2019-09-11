@@ -1,0 +1,9 @@
+.list {
+    grid-area: f;
+    background-color: mediumslateblue;
+    margin-top: 20px;
+}
+
+.title {
+    color: white;
+}

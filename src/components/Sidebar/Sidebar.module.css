@@ -1,0 +1,5 @@
+.side {
+    grid-area: s;
+    background-color: mediumslateblue;
+    padding: 20px;
+}
