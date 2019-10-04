@@ -131,38 +131,33 @@ export const toggleFollowingProgress = (isFetching, userId) => {
 }
 
 
-export const getUsersThunkCreator = (currentPage, pageSize) => {
-    return (dispatch) => {
-        dispatch(toggleIsFetching(true));
-        dispatch(setCurrentPage(currentPage));
-        userAPI.getUsers(currentPage, pageSize).then(data => {
-            dispatch(toggleIsFetching(false));
-            dispatch(setUsers(data.items));
-            dispatch(setTotalUsersCount(data.totalCount));
-        });
-    }
+export const getUsersThunkCreator = (currentPage, pageSize) => (dispatch) => {
+    dispatch(toggleIsFetching(true));
+    dispatch(setCurrentPage(currentPage));
+    userAPI.getUsers(currentPage, pageSize).then(data => {
+        dispatch(toggleIsFetching(false));
+        dispatch(setUsers(data.items));
+        dispatch(setTotalUsersCount(data.totalCount));
+    });
+
 }
-export const unfollowThunkCreator = (userId) => {
-    return (dispatch) => {
-        dispatch(toggleFollowingProgress(true, userId));
-        followAPI.unfollow(userId).then(data => {
-            if (data.resultCode === 0) {
-                dispatch(unfollow(userId));
-            }
-            dispatch(toggleFollowingProgress(false, userId));
-        })
-    }
+export const unfollowThunkCreator = (userId) => (dispatch) => {
+    dispatch(toggleFollowingProgress(true, userId));
+    followAPI.unfollow(userId).then(data => {
+        if (data.resultCode === 0) {
+            dispatch(unfollow(userId));
+        }
+        dispatch(toggleFollowingProgress(false, userId));
+    })
 }
-export const followThunkCreator = (userId) => {
-    return (dispatch) => {
-        dispatch(toggleFollowingProgress(true, userId));
-        followAPI.follow(userId).then(data => {
-            if (data.resultCode === 0) {
-                dispatch(follow(userId));
-            }
-            dispatch(toggleFollowingProgress(false, userId));
-        })
-    }
+export const followThunkCreator = (userId) => (dispatch) => {
+    dispatch(toggleFollowingProgress(true, userId));
+    followAPI.follow(userId).then(data => {
+        if (data.resultCode === 0) {
+            dispatch(follow(userId));
+        }
+        dispatch(toggleFollowingProgress(false, userId));
+    })
 }
 
 export default usersReducer;

@@ -10,13 +10,15 @@ import {Provider} from "react-redux";
 import usersReducer from "./redux/usersReducer";
 import authReducer from "./redux/authReducer";
 import thunkMiddleware from "redux-thunk";
+import { reducer as formReducer } from 'redux-form'
 
 const combinedReducers = combineReducers({
     dialogsPage: dialogsPageReducer,
     profilePage: profilePageReducer,
     sidebar: sidebarReducer,
     usersPage: usersReducer,
-    auth: authReducer
+    auth: authReducer,
+    form: formReducer
 });
 
 const store = createStore(combinedReducers, applyMiddleware(thunkMiddleware));

@@ -1,8 +1,8 @@
 import {profileAPI} from "../api/api";
 
 const ADD_POST = 'MA/PROFILE_PAGE/ADD_POST';
-const UPDATE_NEW_POST_TEXT = 'MA/PROFILE_PAGE/UPDATE_NEW_POST_TEXT';
 const SET_USER_PROFILE = 'MA/PROFILE_PAGE/SET_USER_PROFILE';
+const SET_USER_STATUS = 'MA/PROFILE_PAGE/SET_USER_STATUS';
 
 let initialState = {
     posts: [
@@ -19,24 +19,16 @@ let initialState = {
             imageUrl: "https://avatarfiles.alphacoders.com/855/85557.png"
         }
     ],
-    newPostText: '',
-    profile: null
+    profile: null,
+    status: ""
 }
 
 const profilePageReducer = (state = initialState, action) => {
-
     switch (action.type) {
-        case    UPDATE_NEW_POST_TEXT: {
-            return {
-                ...state,
-                newPostText: action.newText
-            }
-        }
         case    ADD_POST: {
             return {
                 ...state,
-                posts: [...state.posts, {id: 3, text: state.newPostText, likes: 0}],
-                newPostText: ''
+                posts: [...state.posts, {id: 3, text: action.newPostText, likes: 0}],
             }
         }
         case    SET_USER_PROFILE: {
@@ -45,29 +37,47 @@ const profilePageReducer = (state = initialState, action) => {
                 profile: action.profile
             }
         }
+        case    SET_USER_STATUS: {
+            return {
+                ...state,
+                status: action.status
+            }
+        }
         default:
             return state;
     }
 }
 
-export const addPostAC = () => {
-    return {type: ADD_POST}
-}
-
-export const updateNewPostTextAC = (postText) => {
-    return {type: UPDATE_NEW_POST_TEXT, newText: postText}
+export const addPostAC = (newPostText) => {
+    return {type: ADD_POST, newPostText: newPostText}
 }
 
 export const setUserProfile = (profile) => {
     return {type: SET_USER_PROFILE, profile}
 }
 
-export const getUserProfileThunkCreator = (userId) => {
-    return (dispatch) => {
-        profileAPI.getProfile(userId).then(data => {
-            dispatch(setUserProfile(data));
-        });
-    }
+export const setUserStatus = (status) => {
+    return {type: SET_USER_STATUS, status}
+}
+
+export const getUserProfileThunk = (userId) => (dispatch) => {
+    profileAPI.getProfile(userId).then(data => {
+        dispatch(setUserProfile(data));
+    });
+}
+
+export const getUserStatusThunk = (userId) => (dispatch) => {
+    profileAPI.getStatus(userId).then(data => {
+        dispatch(setUserStatus(data));
+    });
+}
+
+export const updateUserStatusThunk = (status) => (dispatch) => {
+    profileAPI.updateStatus(status).then(data => {
+        if (data.resultCode === 0) {
+            dispatch(setUserStatus(status));
+        }
+    });
 }
 
 export default profilePageReducer;
